@@ -13,6 +13,9 @@ const database = require("./database/sql");
 // environment control
 const isDeveloping = process.env.NODE_ENV === "development";
 
+//include middleware
+const middleware = require("./middleware/middleware");
+
 // Make DB connections
 const dbSelfCheck = async () => {
   let dbSelfCheckQuery = database.knex.select(database.knex.raw("now()"));
@@ -30,6 +33,9 @@ dbSelfCheck();
 app.get("/ping", (req, res) => {
   res.send("pong");
 });
+
+// middlware
+app.use(middleware);
 
 // // Routes
 
