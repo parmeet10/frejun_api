@@ -41,6 +41,13 @@ const getStatus = (code) => {
         message: "Authentication failed.",
       };
       break;
+    case "invalid_token":
+      status = {
+        code: code,
+        error: true,
+        message: "Invalid token",
+      };
+      break;
 
     case "generic_fail":
     default:
