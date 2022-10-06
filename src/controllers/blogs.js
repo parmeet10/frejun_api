@@ -26,7 +26,21 @@ const getBlogs = async (req, res, next) => {
   return res.json(result);
 };
 
+const updateBlogs = async (req, res, next) => {
+  if (!req.query.blogId) {
+    throw new Error("input_missing");
+  }
+
+  let blogParams = {};
+  blogParams.blogId = req.query.blogId;
+
+  const result = await blogService.updateBlogs(blogParams);
+
+  return res.json(result);
+};
+
 module.exports = {
   createBlog: wrapperService.wrap(createBlog),
   getBlogs: wrapperService.wrap(getBlogs),
+  updateBlogs: wrapperService.wrap(updateBlogs),
 };
