@@ -2,7 +2,11 @@
 const express = require("express");
 
 const app = express();
+app.use(express.json());
 const port = 3000 || process.env.PORT;
+
+// Include routes
+const blogRoutes = require("./routes/blogs");
 
 // Include config files
 const status = require("./configs/status");
@@ -38,6 +42,7 @@ app.get("/ping", (req, res) => {
 app.use(middleware);
 
 // // Routes
+app.use("/blogs", blogRoutes);
 
 // Catch 404s
 app.use((req, res, next) => {
@@ -61,5 +66,6 @@ app.use((err, req, res, next) => {
 
 app.listen(port, () => {
   console.log(`########## Environment: ${process.env.NODE_ENV} ##########`);
-  console.log(`${new Date()}: Server running on port:${port}`);
+  console.log(`${new Date()}`);
+  console.log(`Server running on port:${port}`);
 });

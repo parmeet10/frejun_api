@@ -40,6 +40,7 @@ const middleware = async (req, res, next) => {
   if (!decode || decode == null) {
     throw new Error("invalid_token");
   }
+  
   return next();
 };
 
