@@ -22,6 +22,20 @@ const createBlog = async (params) => {
   return response;
 };
 
+const getBlogs = async (params) => {
+  let blogParams = {};
+  params.blogId ? (blogParams.blogId = params.blogId) : null;
+
+  const result = await blogModels.getBlogs(blogParams);
+
+  let response = status.getStatus("success");
+  response.data = {};
+  response.data.blogs = result;
+
+  return response;
+};
+
 module.exports = {
   createBlog: wrapperService.wrap(createBlog),
+  getBlogs: wrapperService.wrap(getBlogs),
 };

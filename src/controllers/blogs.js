@@ -17,6 +17,16 @@ const createBlog = async (req, res, next) => {
   return res.json(result);
 };
 
+const getBlogs = async (req, res, next) => {
+  let blogParams = {};
+  req.query.blogId ? (blogParams.blogId = req.query.blogId) : null;
+
+  const result = await blogService.getBlogs(blogParams);
+
+  return res.json(result);
+};
+
 module.exports = {
   createBlog: wrapperService.wrap(createBlog),
+  getBlogs: wrapperService.wrap(getBlogs),
 };
