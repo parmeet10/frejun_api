@@ -49,21 +49,42 @@ const updateBlogs = async (params) => {
     throw new Error("authn_fail");
   }
 
+  let operatedBLogAndWordsArr = operationsOnBlog(blog);
+
+  let updatedBlogParams = {};
+  updatedBlogParams.blogId = blog.data.blogs[0].id;
+  updatedBlogParams.body = operatedBLogAndWordsArr.updatedBody;
+
+//   const updatedBlog = await blogModels.updateBlogs(updatedBlogParams);
+
+  let response = status.getStatus("success");
+  response.data = {};
+  response.data.wordsWithA = operatedBLogAndWordsArr.wordsWithA;
+  response.data.blogs = blog.data.blogs;
+
+  return response;
+};
+
+const operationsOnBlog = (blog) => {
   let wordsWithA = [];
+  let updatedBody = [];
+
   let _arr = blog.data.blogs[0].body.split(" ");
   for (let word of _arr) {
     let char = word.split("");
     if (char[0] === "a" || char[0] === "A") {
       wordsWithA.push(word);
+      if (char.length > 3) {
+        for (let i = char.length - 1; i >= char.length - 3; i--) {
+          char[i] = "*";
+        }
+      }
+      word = char.join("");
     }
+    updatedBody.push(word);
   }
 
-  let response = status.getStatus("success");
-  response.data = {};
-  response.data.wordsWithA = wordsWithA;
-  response.data.blogs = blog.data.blogs;
-
-  return response;
+  return { wordsWithA: wordsWithA, updatedBody: updatedBody.join(" ") };
 };
 
 module.exports = {
