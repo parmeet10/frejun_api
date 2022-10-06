@@ -1,7 +1,5 @@
 const mysql = require("mysql2/promise");
 
-const wrapperService = require("../services/wrapper");
-
 const Knex = require("knex");
 
 const mysqlConnectionString = {
