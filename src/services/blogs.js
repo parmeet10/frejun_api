@@ -51,16 +51,23 @@ const updateBlogs = async (params) => {
 
   let operatedBLogAndWordsArr = operationsOnBlog(blog);
 
+  let response = status.getStatus("success");
+  response.data = {};
+  response.data.wordsWithA = operatedBLogAndWordsArr.wordsWithA;
+
   let updatedBlogParams = {};
   updatedBlogParams.blogId = blog.data.blogs[0].id;
   updatedBlogParams.body = operatedBLogAndWordsArr.updatedBody;
 
-//   const updatedBlog = await blogModels.updateBlogs(updatedBlogParams);
+  const updatedBlog = await blogModels.updateBlogs(updatedBlogParams);
 
-  let response = status.getStatus("success");
-  response.data = {};
-  response.data.wordsWithA = operatedBLogAndWordsArr.wordsWithA;
-  response.data.blogs = blog.data.blogs;
+  if (updatedBlog == true) {
+    let latestBlogParams = {};
+    latestBlogParams.blogId = params.blogId;
+
+    const latestBlog = await getBlogs(blogParams);
+    response.data.blogs = latestBlog.data.blogs;
+  }
 
   return response;
 };

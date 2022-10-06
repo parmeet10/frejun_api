@@ -28,7 +28,7 @@ const getBlogs = async (params) => {
     .select("b.active")
     .select("b.created_at")
     .from("blogs as b")
-    .orderBy("b.created_at", 'aesc');
+    .orderBy("b.created_at", "aesc");
 
   params.blogId ? getBlogsQuery.where("b.id", params.blogId) : null;
 
@@ -37,6 +37,24 @@ const getBlogs = async (params) => {
   let _result = _translateToJson(result);
 
   return _result;
+};
+
+const updateBlogs = async (params) => {
+  if (!params.blogId || !params.body) {
+    throw new Error("input_missing");
+  }
+
+  let _update = { updated_at: new Date() };
+  params.body ? (_update["body"] = params.body) : null;
+
+  let updateBlogQuery = database
+    .knex("blogs")
+    .update(_update)
+    .where("id", params.blogId);
+
+  let result = await updateBlogQuery;
+
+  return true;
 };
 
 const _translateToJson = (blogs) => {
@@ -65,4 +83,5 @@ const _translateToJson = (blogs) => {
 module.exports = {
   createBlog: wrapperService.wrap(createBlog),
   getBlogs: wrapperService.wrap(getBlogs),
+  updateBlogs: wrapperService.wrap(updateBlogs),
 };
